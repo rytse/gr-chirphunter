@@ -1,0 +1,24 @@
+id: chirphunter_chirpgen
+label: chirpgen
+category: '[chirphunter]'
+
+templates:
+  imports: import chirphunter
+  make: chirphunter.chirpgen(${f0}, ${chirp_rate}, ${samp_rate})
+
+parameters:
+- id: f0
+  label: Start Frequency
+  dtype: float
+- id: chirp_rate
+  label: Chirp Rate (Slope)
+  dtype: float
+- id: samp_rate
+  label: Sampling Rate
+  dtype: float 
+
+outputs:
+- label: Chirp
+  dtype: complex
+
+file_format: 1
