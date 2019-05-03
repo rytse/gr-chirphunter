@@ -66,7 +66,23 @@ blocks:
     minoutbuf: '0'
     vlen: '8192'
   states:
-    coordinate: [1064, 188.0]
+    coordinate: [264, 516.0]
+    rotation: 0
+    state: true
+- name: blocks_deinterleave_0
+  id: blocks_deinterleave
+  parameters:
+    affinity: ''
+    alias: ''
+    blocksize: '1'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '2'
+    type: short
+    vlen: '1'
+  states:
+    coordinate: [256, 144.0]
     rotation: 0
     state: true
 - name: blocks_file_sink_0
@@ -76,12 +92,12 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/dmixed.out
+    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/dmixed_iq.out
     type: complex
     unbuffered: 'False'
     vlen: '1'
   states:
-    coordinate: [632, 300.0]
+    coordinate: [648, 276.0]
     rotation: 0
     state: true
 - name: blocks_file_source_0
@@ -100,9 +116,69 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [32, 140.0]
+    coordinate: [32, 324.0]
+    rotation: 0
+    state: disabled
+- name: blocks_file_source_1
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/target.iq
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'False'
+    type: short
+    vlen: '1'
+  states:
+    coordinate: [48, 124.0]
     rotation: 0
     state: enabled
+- name: blocks_float_to_complex_0
+  id: blocks_float_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    coordinate: [592, 144.0]
+    rotation: 0
+    state: true
+- name: blocks_int_to_float_0
+  id: blocks_int_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    coordinate: [1144, 60.0]
+    rotation: 0
+    state: disabled
+- name: blocks_int_to_float_1
+  id: blocks_int_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    coordinate: [1144, 124.0]
+    rotation: 0
+    state: disabled
 - name: blocks_multiply_xx_0
   id: blocks_multiply_xx
   parameters:
@@ -115,7 +191,7 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [272, 176.0]
+    coordinate: [272, 360.0]
     rotation: 0
     state: enabled
 - name: blocks_nlog10_ff_0
@@ -130,7 +206,35 @@ blocks:
     n: '1'
     vlen: '8192'
   states:
-    coordinate: [1272, 172.0]
+    coordinate: [472, 500.0]
+    rotation: 0
+    state: true
+- name: blocks_short_to_float_0
+  id: blocks_short_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    coordinate: [416, 108.0]
+    rotation: 0
+    state: true
+- name: blocks_short_to_float_1
+  id: blocks_short_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    coordinate: [416, 196.0]
     rotation: 0
     state: true
 - name: blocks_stream_to_vector_0
@@ -145,7 +249,7 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [648, 192.0]
+    coordinate: [656, 376.0]
     rotation: 0
     state: enabled
 - name: blocks_vector_to_stream_1
@@ -160,7 +264,7 @@ blocks:
     type: float
     vlen: '1'
   states:
-    coordinate: [1160, 480.0]
+    coordinate: [664, 520.0]
     rotation: 0
     state: true
 - name: chirphunter_chirpgen_0
@@ -175,7 +279,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: samp_rate
   states:
-    coordinate: [24, 260.0]
+    coordinate: [32, 444.0]
     rotation: 0
     state: enabled
 - name: fft_vxx_0
@@ -193,7 +297,7 @@ blocks:
     type: complex
     window: window.blackmanharris(8192)
   states:
-    coordinate: [824, 156.0]
+    coordinate: [832, 340.0]
     rotation: 0
     state: enabled
 - name: fir_filter_xxx_0
@@ -209,7 +313,7 @@ blocks:
     taps: '1'
     type: ccc
   states:
-    coordinate: [408, 180.0]
+    coordinate: [416, 364.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
@@ -303,15 +407,25 @@ blocks:
     ymin: '-1'
     yunit: '""'
   states:
-    coordinate: [1320, 460.0]
+    coordinate: [824, 500.0]
     rotation: 0
     state: true
 
 connections:
 - [blocks_complex_to_mag_squared_0, '0', blocks_nlog10_ff_0, '0']
+- [blocks_deinterleave_0, '0', blocks_int_to_float_0, '0']
+- [blocks_deinterleave_0, '0', blocks_short_to_float_0, '0']
+- [blocks_deinterleave_0, '1', blocks_int_to_float_1, '0']
+- [blocks_deinterleave_0, '1', blocks_short_to_float_1, '0']
 - [blocks_file_source_0, '0', blocks_multiply_xx_0, '0']
+- [blocks_file_source_1, '0', blocks_deinterleave_0, '0']
+- [blocks_float_to_complex_0, '0', blocks_multiply_xx_0, '0']
+- [blocks_int_to_float_0, '0', blocks_float_to_complex_0, '0']
+- [blocks_int_to_float_1, '0', blocks_float_to_complex_0, '1']
 - [blocks_multiply_xx_0, '0', fir_filter_xxx_0, '0']
 - [blocks_nlog10_ff_0, '0', blocks_vector_to_stream_1, '0']
+- [blocks_short_to_float_0, '0', blocks_float_to_complex_0, '0']
+- [blocks_short_to_float_1, '0', blocks_float_to_complex_0, '1']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_vector_to_stream_1, '0', qtgui_time_sink_x_0, '0']
 - [chirphunter_chirpgen_0, '0', blocks_multiply_xx_0, '1']
