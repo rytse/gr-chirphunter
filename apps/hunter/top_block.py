@@ -20,20 +20,23 @@ if __name__ == '__main__':
         except:
             print("Warning: failed to XInitThreads()")
 
+import os
+import sys
+sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
+
 from PyQt5 import Qt
 from gnuradio import qtgui
 from gnuradio.filter import firdes
 import sip
 from gnuradio import blocks
-import pmt
 from gnuradio import fft
 from gnuradio.fft import window
 from gnuradio import filter
 from gnuradio import gr
-import sys
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
+from iqsource import iqsource  # grc-generated hier_block
 import chirphunter
 from gnuradio import qtgui
 
@@ -74,6 +77,7 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 50e6
+        self.fn = fn = '/home/rtse/Documents/cubesat/gr-chirphunter/data/in/target.iq'
         self.f0 = f0 = 3e6
         self.chirp_rate = chirp_rate = 100166.14948319287
 
@@ -127,22 +131,19 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win)
+        self.iqsource_0 = iqsource(
+            fn=fn,
+        )
         self.fir_filter_xxx_0 = filter.fir_filter_ccc(500, [1])
         self.fir_filter_xxx_0.declare_sample_delay(0)
         self.fft_vxx_0 = fft.fft_vcc(8192, True, window.blackmanharris(8192), True, 1)
         self.chirphunter_chirpgen_0 = chirphunter.chirpgen(f0, chirp_rate, samp_rate)
         self.blocks_vector_to_stream_1 = blocks.vector_to_stream(gr.sizeof_float*1, 8192)
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, 8192)
-        self.blocks_short_to_float_1 = blocks.short_to_float(1, 1)
-        self.blocks_short_to_float_0 = blocks.short_to_float(1, 1)
         self.blocks_nlog10_ff_0 = blocks.nlog10_ff(1, 8192, 0)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
-        self.blocks_float_to_complex_0 = blocks.float_to_complex(1)
-        self.blocks_file_source_1 = blocks.file_source(gr.sizeof_short*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/target.iq', False, 0, 0)
-        self.blocks_file_source_1.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/dmixed_iq.out', False)
         self.blocks_file_sink_0.set_unbuffered(False)
-        self.blocks_deinterleave_0 = blocks.deinterleave(gr.sizeof_short*1, 1)
         self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(8192)
 
 
@@ -151,20 +152,15 @@ class top_block(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.blocks_complex_to_mag_squared_0, 0), (self.blocks_nlog10_ff_0, 0))
-        self.connect((self.blocks_deinterleave_0, 0), (self.blocks_short_to_float_0, 0))
-        self.connect((self.blocks_deinterleave_0, 1), (self.blocks_short_to_float_1, 0))
-        self.connect((self.blocks_file_source_1, 0), (self.blocks_deinterleave_0, 0))
-        self.connect((self.blocks_float_to_complex_0, 0), (self.blocks_multiply_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.fir_filter_xxx_0, 0))
         self.connect((self.blocks_nlog10_ff_0, 0), (self.blocks_vector_to_stream_1, 0))
-        self.connect((self.blocks_short_to_float_0, 0), (self.blocks_float_to_complex_0, 0))
-        self.connect((self.blocks_short_to_float_1, 0), (self.blocks_float_to_complex_0, 1))
         self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
         self.connect((self.blocks_vector_to_stream_1, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.chirphunter_chirpgen_0, 0), (self.blocks_multiply_xx_0, 1))
         self.connect((self.fft_vxx_0, 0), (self.blocks_complex_to_mag_squared_0, 0))
         self.connect((self.fir_filter_xxx_0, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.fir_filter_xxx_0, 0), (self.blocks_stream_to_vector_0, 0))
+        self.connect((self.iqsource_0, 0), (self.blocks_multiply_xx_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -177,6 +173,13 @@ class top_block(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
+
+    def get_fn(self):
+        return self.fn
+
+    def set_fn(self, fn):
+        self.fn = fn
+        self.iqsource_0.set_fn(self.fn)
 
     def get_f0(self):
         return self.f0
