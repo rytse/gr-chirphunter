@@ -33,7 +33,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '100166.14948319287'
+    value: 1.0085e5
   states:
     coordinate: [336, 12.0]
     rotation: 0
@@ -42,7 +42,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 3e6
+    value: 6.2885e6
   states:
     coordinate: [264, 12.0]
     rotation: 0
@@ -51,7 +51,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '''/home/rtse/Documents/cubesat/gr-chirphunter/data/in/target.iq'''
+    value: '''/home/rtse/Documents/cubesat/gr-chirphunter/data/in/IQREC-02-03-19-13h50m43s310.iq'''
   states:
     coordinate: [440, 12.0]
     rotation: 0
@@ -85,7 +85,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/dmixed_iq.out
+    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/out/dmixed.out
     type: complex
     unbuffered: 'False'
     vlen: '1'
@@ -196,10 +196,20 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_delay: '0'
-    taps: '1'
+    taps: '[1] * 500'
     type: ccc
   states:
     coordinate: [464, 140.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import numpy as np
+  states:
+    coordinate: [944, 40.0]
     rotation: 0
     state: true
 - name: iqsource_0
@@ -306,9 +316,84 @@ blocks:
     ymin: '-1'
     yunit: '""'
   states:
-    coordinate: [896, 284.0]
+    coordinate: [928, 284.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: '8192'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'True'
+    type: float
+    update_time: '0.10'
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+  states:
+    coordinate: [928, 380.0]
+    rotation: 0
+    state: disabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '1'
+    fbw: '0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: ''
+    type: ccc
+  states:
+    coordinate: [544, 528.0]
+    rotation: 0
+    state: disabled
 
 connections:
 - [blocks_complex_to_mag_squared_0, '0', blocks_nlog10_ff_0, '0']
@@ -316,6 +401,7 @@ connections:
 - [blocks_nlog10_ff_0, '0', blocks_vector_to_stream_1, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_vector_to_stream_1, '0', qtgui_time_sink_x_0, '0']
+- [blocks_vector_to_stream_1, '0', qtgui_waterfall_sink_x_0, '0']
 - [chirphunter_chirpgen_0, '0', blocks_multiply_xx_0, '1']
 - [fft_vxx_0, '0', blocks_complex_to_mag_squared_0, '0']
 - [fir_filter_xxx_0, '0', blocks_file_sink_0, '0']

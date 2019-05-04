@@ -38,6 +38,7 @@ from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from iqsource import iqsource  # grc-generated hier_block
 import chirphunter
+import numpy as np
 from gnuradio import qtgui
 
 class top_block(gr.top_block, Qt.QWidget):
@@ -77,9 +78,9 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 50e6
-        self.fn = fn = '/home/rtse/Documents/cubesat/gr-chirphunter/data/in/target.iq'
-        self.f0 = f0 = 3e6
-        self.chirp_rate = chirp_rate = 100166.14948319287
+        self.fn = fn = '/home/rtse/Documents/cubesat/gr-chirphunter/data/in/IQREC-02-03-19-13h50m43s310.iq'
+        self.f0 = f0 = 6.2885e6
+        self.chirp_rate = chirp_rate = 1.0085e5
 
         ##################################################
         # Blocks
@@ -134,7 +135,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.iqsource_0 = iqsource(
             fn=fn,
         )
-        self.fir_filter_xxx_0 = filter.fir_filter_ccc(500, [1])
+        self.fir_filter_xxx_0 = filter.fir_filter_ccc(500, [1] * 500)
         self.fir_filter_xxx_0.declare_sample_delay(0)
         self.fft_vxx_0 = fft.fft_vcc(8192, True, window.blackmanharris(8192), True, 1)
         self.chirphunter_chirpgen_0 = chirphunter.chirpgen(f0, chirp_rate, samp_rate)
@@ -142,7 +143,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, 8192)
         self.blocks_nlog10_ff_0 = blocks.nlog10_ff(1, 8192, 0)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/dmixed_iq.out', False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/out/dmixed.out', False)
         self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(8192)
 
