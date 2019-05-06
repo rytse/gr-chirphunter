@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import matplotlib
 
 matplotlib.use("Agg")
@@ -13,13 +12,8 @@ import math
 import glob
 import sys
 import os
+import sys
 
-#import stuffr
-#import chirp_config
-#from optparse import OptionParser
-
-# remove the any residual band specific variation in noise floor
-# that isn't removed by the amplitude domain adaptive filter before chirp downconversion.
 def medianEqualize(S):
     for i in np.arange(S.shape[0]):
         S[i, :] = S[i, :] / np.median(S[i, :])
@@ -60,15 +54,20 @@ def spectrogram(x,window=1024,wf=hanning):
         res[i,] = np.abs(fftshift(fft(wfv*x[i*window + np.arange(window)])))**2
     return(res)
 
-
 cr = 1.0085e5
+#cr = 0.1e6
 sr = 50e6 / 500
-window = 8192
-f = 'data/out/dmixed.out'
-if os.path.isfile("%s.png" % (f)):
-    print('File already exists, overwritting')
+#sr = 20e6 / 500
+#window = 2**18
+window = 2**13
 
-z = np.fromfile(f, dtype=np.complex64)
+if len(sys.argv) == 2:
+    fn = sys.argv[1]
+else:
+    fn = 'dmixed.out'
+path = f'data/out/{fn}'
+
+z = np.fromfile(path, dtype=np.complex64)
 
 S = spectrogram(z, window=window)
 S = medianEqualize(S)
@@ -76,16 +75,17 @@ freq = np.linspace(0, (len(z) / sr) * cr, num=S.shape[0]) / 1e6
 vrange = np.linspace(3e8 * (-(sr / 2)) / cr, 3e8 * (sr / 2.0) / cr, num=S.shape[1]) / 1e3
 
 cdb = np.transpose(comprz_dB(S[:, ::-1]))
-plt.pcolormesh(np.linspace(0, 1, cdb.shape[1]), np.linspace(0, 1, cdb.shape[0]), cdb, cmap="jet", vmin=-1.0)
+#plt.pcolormesh(np.linspace(0, 1, cdb.shape[1]), np.linspace(0, 1, cdb.shape[0]), cdb, cmap="jet", vmin=-1.0)
+plt.pcolormesh(freq, vrange, cdb, cmap="jet", vmin=-1.0)
 
-#plt.ylim([7500, 17500])
-#plt.xlim([0, (len(z) / sr) * cr])
+plt.ylim([0e3, 1e3])
+#plt.xlim([0, 40])
 plt.xlabel("Frequency (MHz)")
 plt.ylabel("Virtual range (km)")
 plt.title(f)
 plt.tight_layout()
 plt.colorbar()
-plt.savefig('data/out/dmixed.png')
+plt.savefig(f'{path}.png')
 plt.clf()
 
 plt.close()
