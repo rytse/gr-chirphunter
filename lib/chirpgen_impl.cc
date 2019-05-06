@@ -71,15 +71,27 @@ namespace gr {
         gr_vector_void_star &output_items) {
 
       gr_complex *out = (gr_complex *) output_items[0];
-      double chirpt = curr_t * fs;
-      double didxr = LUT_SIZE * (f0 * chirpt + 0.5 * chirp_rate * chirpt * chirpt);
+
+      /*
+      double chirpt = curr_t / fs;
+      double time  = (f0 + 0.5 * chirp_rate * chirpt) * chirpt;
       int64_t idx = (int64_t) didxr % LUT_SIZE;
+      */
 
+      double time = 0;
+      double theta = 0;
+
+      /* Compute e^{2\pi i \omega} where omega varies with t
+       * as \omega = (f_0 + m * t) * t */
       for (int i = 0; i < noutput_items; i++) {
-          out[i] = chirp_lut[idx + i];
-      }
+          time = curr_t / fs;
+          theta = (f0 + 0.5 * chirp_rate * time) * time;
 
-      curr_t += noutput_items / fs;
+          out[i].real(cos(2.0 * M_PI * theta));
+          out[i].imag(sin(2.0 * M_PI * theta));
+
+          curr_t++;
+      }
 
       return noutput_items;
     }
