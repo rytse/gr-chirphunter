@@ -33,27 +33,28 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 5e5
+    value: 9.9951e4
   states:
-    coordinate: [328, 12.0]
+    coordinate: [472, 12.0]
     rotation: 0
     state: enabled
 - name: f0
   id: variable
   parameters:
     comment: ''
-    value: 6.2885e6
+    value: 6043612 * 1.5
   states:
-    coordinate: [264, 12.0]
+    coordinate: [312, 12.0]
     rotation: 0
     state: enabled
 - name: fn
   id: variable
   parameters:
     comment: ''
-    value: '''/home/rtse/Documents/cubesat/gr-chirphunter/data/in/IQREC-02-03-19-12h07m33s442.iq'''
+    value: '''/media/rtse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will
+      not copy/IQREC-02-03-19-14h02m40s879.iq'''
   states:
-    coordinate: [440, 12.0]
+    coordinate: [592, 12.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -86,7 +87,7 @@ blocks:
   states:
     coordinate: [264, 84.0]
     rotation: 0
-    state: true
+    state: bypassed
 - name: blocks_add_xx_0
   id: blocks_add_xx
   parameters:
@@ -101,7 +102,7 @@ blocks:
   states:
     coordinate: [640, 336.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_real_0
   id: blocks_complex_to_real
   parameters:
@@ -115,6 +116,19 @@ blocks:
     coordinate: [1104, 464.0]
     rotation: 0
     state: enabled
+- name: blocks_complex_to_real_1
+  id: blocks_complex_to_real
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    coordinate: [176, 280.0]
+    rotation: 0
+    state: disabled
 - name: blocks_conjugate_cc_0
   id: blocks_conjugate_cc
   parameters:
@@ -127,13 +141,28 @@ blocks:
     coordinate: [480, 480.0]
     rotation: 0
     state: enabled
+- name: blocks_file_sink_1
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/out/sim_real.out
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    coordinate: [1088, 236.0]
+    rotation: 0
+    state: enabled
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    const: '0.01'
+    const: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     type: complex
@@ -142,6 +171,21 @@ blocks:
     coordinate: [464, 140.0]
     rotation: 0
     state: enabled
+- name: blocks_multiply_const_vxx_1
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '8.13'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    coordinate: [384, 364.0]
+    rotation: 0
+    state: disabled
 - name: blocks_multiply_xx_1
   id: blocks_multiply_xx
   parameters:
@@ -171,7 +215,7 @@ blocks:
   states:
     coordinate: [40, 348.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: chirphunter_chirpgen_1
   id: chirphunter_chirpgen
   parameters:
@@ -179,12 +223,28 @@ blocks:
     alias: ''
     chirp_rate: chirp_rate
     comment: ''
-    f0: f0 * 1.5
+    f0: 'f0 '
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
   states:
     coordinate: [208, 460.0]
+    rotation: 0
+    state: enabled
+- name: fir_filter_xxx_1
+  id: fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '500'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_delay: '0'
+    taps: '[1] * 500'
+    type: ccc
+  states:
+    coordinate: [896, 244.0]
     rotation: 0
     state: enabled
 - name: import_1
@@ -194,7 +254,7 @@ blocks:
     comment: ''
     imports: import numpy as np
   states:
-    coordinate: [616, 12.0]
+    coordinate: [784, 12.0]
     rotation: 0
     state: true
 - name: iqsource_1
@@ -209,7 +269,7 @@ blocks:
   states:
     coordinate: [32, 140.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -230,7 +290,7 @@ blocks:
   states:
     coordinate: [896, 412.0]
     rotation: 0
-    state: true
+    state: bypassed
 - name: qtgui_waterfall_sink_x_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -289,17 +349,81 @@ blocks:
     coordinate: [1280, 444.0]
     rotation: 0
     state: enabled
+- name: qtgui_waterfall_sink_x_1
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: '8192'
+    freqhalf: 'False'
+    grid: 'True'
+    gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'True'
+    type: float
+    update_time: '0.10'
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+  states:
+    coordinate: [376, 260.0]
+    rotation: 0
+    state: disabled
 
 connections:
 - [band_pass_filter_0, '0', blocks_multiply_const_vxx_0, '0']
 - [blocks_add_xx_0, '0', blocks_multiply_xx_1, '0']
 - [blocks_complex_to_real_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [blocks_complex_to_real_1, '0', qtgui_waterfall_sink_x_1, '0']
 - [blocks_conjugate_cc_0, '0', blocks_multiply_xx_1, '1']
 - [blocks_multiply_const_vxx_0, '0', blocks_add_xx_0, '0']
+- [blocks_multiply_const_vxx_0, '0', blocks_multiply_xx_1, '0']
+- [blocks_multiply_const_vxx_1, '0', blocks_add_xx_0, '1']
+- [blocks_multiply_xx_1, '0', fir_filter_xxx_1, '0']
 - [blocks_multiply_xx_1, '0', low_pass_filter_0, '0']
-- [chirphunter_chirpgen_0, '0', blocks_add_xx_0, '1']
+- [chirphunter_chirpgen_0, '0', blocks_multiply_const_vxx_1, '0']
 - [chirphunter_chirpgen_1, '0', blocks_conjugate_cc_0, '0']
+- [fir_filter_xxx_1, '0', blocks_file_sink_1, '0']
 - [iqsource_1, '0', band_pass_filter_0, '0']
+- [iqsource_1, '0', blocks_complex_to_real_1, '0']
 - [low_pass_filter_0, '0', blocks_complex_to_real_0, '0']
 
 metadata:

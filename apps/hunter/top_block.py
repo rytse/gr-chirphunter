@@ -76,9 +76,9 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 50e6
-        self.fn = fn = '/home/rtse/Documents/cubesat/gr-chirphunter/data/in/IQREC-02-03-19-12h07m33s442.iq'
-        self.f0 = f0 = 6.2885e6
-        self.chirp_rate = chirp_rate = 5e5
+        self.fn = fn = '/media/rtse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will not copy/IQREC-02-03-19-14h02m40s879.iq'
+        self.f0 = f0 = 6043612 * 1.5
+        self.chirp_rate = chirp_rate = 9.9951e4
 
         ##################################################
         # Blocks
@@ -117,51 +117,32 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_grid_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
-        self.low_pass_filter_0 = filter.fir_filter_ccf(
-            1,
-            firdes.low_pass(
-                1,
-                samp_rate,
-                11e6,
-                0.5e6,
-                firdes.WIN_HAMMING,
-                6.76))
         self.iqsource_1 = iqsource(
             fn=fn,
         )
-        self.chirphunter_chirpgen_1 = chirphunter.chirpgen(f0 * 1.5, chirp_rate, samp_rate)
-        self.chirphunter_chirpgen_0 = chirphunter.chirpgen(f0, chirp_rate, samp_rate)
+        self.fir_filter_xxx_1 = filter.fir_filter_ccc(500, [1] * 500)
+        self.fir_filter_xxx_1.declare_sample_delay(0)
+        self.chirphunter_chirpgen_1 = chirphunter.chirpgen(f0 , chirp_rate, samp_rate)
         self.blocks_multiply_xx_1 = blocks.multiply_vcc(1)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(0.01)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(1)
+        self.blocks_file_sink_1 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/out/sim_real.out', False)
+        self.blocks_file_sink_1.set_unbuffered(False)
         self.blocks_conjugate_cc_0 = blocks.conjugate_cc()
         self.blocks_complex_to_real_0 = blocks.complex_to_real(1)
-        self.blocks_add_xx_0 = blocks.add_vcc(1)
-        self.band_pass_filter_0 = filter.fir_filter_ccf(
-            1,
-            firdes.band_pass(
-                1,
-                samp_rate,
-                1.5e6,
-                20e6,
-                0.25e6,
-                firdes.WIN_HAMMING,
-                6.76))
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_add_xx_0, 0), (self.blocks_multiply_xx_1, 0))
         self.connect((self.blocks_complex_to_real_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
         self.connect((self.blocks_conjugate_cc_0, 0), (self.blocks_multiply_xx_1, 1))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.chirphunter_chirpgen_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_multiply_xx_1, 0))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_complex_to_real_0, 0))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.fir_filter_xxx_1, 0))
         self.connect((self.chirphunter_chirpgen_1, 0), (self.blocks_conjugate_cc_0, 0))
-        self.connect((self.iqsource_1, 0), (self.band_pass_filter_0, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.blocks_complex_to_real_0, 0))
+        self.connect((self.fir_filter_xxx_1, 0), (self.blocks_file_sink_1, 0))
+        self.connect((self.iqsource_1, 0), (self.blocks_multiply_const_vxx_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")

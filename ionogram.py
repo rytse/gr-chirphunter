@@ -75,10 +75,10 @@ freq = np.linspace(0, (len(z) / sr) * cr, num=S.shape[0]) / 1e6
 vrange = np.linspace(3e8 * (-(sr / 2)) / cr, 3e8 * (sr / 2.0) / cr, num=S.shape[1]) / 1e3
 
 cdb = np.transpose(comprz_dB(S[:, ::-1]))
-#plt.pcolormesh(np.linspace(0, 1, cdb.shape[1]), np.linspace(0, 1, cdb.shape[0]), cdb, cmap="jet", vmin=-1.0)
-plt.pcolormesh(freq, vrange, cdb, cmap="jet", vmin=-1.0)
+plt.pcolormesh(np.linspace(0, 1, cdb.shape[1]), np.linspace(0, 1, cdb.shape[0]), cdb, cmap="jet", vmin=-1.0)
+#plt.pcolormesh(freq, vrange, cdb, cmap="jet", vmin=-1.0)
 
-plt.ylim([0e3, 1e3])
+#plt.ylim([0e3, 1e3])
 #plt.xlim([0, 40])
 plt.xlabel("Frequency (MHz)")
 plt.ylabel("Virtual range (km)")
