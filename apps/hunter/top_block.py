@@ -76,8 +76,10 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 50e6
-        self.fn = fn = '/media/rtse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will not copy/IQREC-02-03-19-14h02m40s879.iq'
-        self.f0 = f0 = 6043612 * 1.5
+        self.decim = decim = 500
+        self.lpf_taps = lpf_taps = firdes.low_pass(1.0, samp_rate / decim, samp_rate / decim / 2,0.1e3, firdes.WIN_HAMMING, 6.76)
+        self.fn = fn = '/media/rytse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will not copy/IQREC-02-03-19-14h02m40s879.iq'
+        self.f0 = f0 = 6043612 * 1.005
         self.chirp_rate = chirp_rate = 9.9951e4
 
         ##################################################
@@ -120,13 +122,15 @@ class top_block(gr.top_block, Qt.QWidget):
         self.iqsource_1 = iqsource(
             fn=fn,
         )
-        self.fir_filter_xxx_1 = filter.fir_filter_ccc(500, [1] * 500)
+        self.fir_filter_xxx_1 = filter.fir_filter_ccc(decim, lpf_taps)
         self.fir_filter_xxx_1.declare_sample_delay(0)
         self.chirphunter_chirpgen_1 = chirphunter.chirpgen(f0 , chirp_rate, samp_rate)
         self.blocks_multiply_xx_1 = blocks.multiply_vcc(1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(1)
-        self.blocks_file_sink_1 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rtse/Documents/cubesat/gr-chirphunter/data/out/sim_real.out', False)
+        self.blocks_file_sink_1 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rytse/Documents/cubesat/gr-chirphunter/data/out/sim_real.out', False)
         self.blocks_file_sink_1.set_unbuffered(False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, '/home/rytse/Documents/cubesat/gr-chirphunter/data/out/chirp.out', False)
+        self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_conjugate_cc_0 = blocks.conjugate_cc()
         self.blocks_complex_to_real_0 = blocks.complex_to_real(1)
 
@@ -141,6 +145,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_complex_to_real_0, 0))
         self.connect((self.blocks_multiply_xx_1, 0), (self.fir_filter_xxx_1, 0))
         self.connect((self.chirphunter_chirpgen_1, 0), (self.blocks_conjugate_cc_0, 0))
+        self.connect((self.chirphunter_chirpgen_1, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.fir_filter_xxx_1, 0), (self.blocks_file_sink_1, 0))
         self.connect((self.iqsource_1, 0), (self.blocks_multiply_const_vxx_0, 0))
 
@@ -157,6 +162,19 @@ class top_block(gr.top_block, Qt.QWidget):
         self.band_pass_filter_0.set_taps(firdes.band_pass(1, self.samp_rate, 1.5e6, 20e6, 0.25e6, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 11e6, 0.5e6, firdes.WIN_HAMMING, 6.76))
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
+
+    def get_decim(self):
+        return self.decim
+
+    def set_decim(self, decim):
+        self.decim = decim
+
+    def get_lpf_taps(self):
+        return self.lpf_taps
+
+    def set_lpf_taps(self, lpf_taps):
+        self.lpf_taps = lpf_taps
+        self.fir_filter_xxx_1.set_taps(self.lpf_taps)
 
     def get_fn(self):
         return self.fn
