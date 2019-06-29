@@ -1,4 +1,4 @@
-function waterfall(cin, fs)
+function dwaterfall(cin, fs)
 % Waterfall plot
 %   cin: input signal (complex)
 %   fs: sampling rate (Hz)
@@ -16,7 +16,11 @@ for ii = 1 : length(win) / 2 : length(cin) - length(win)
 end
 
 [k,m] = size(f);
-gr = imagesc(linspace(0, ELAPSED_TIME, m),linspace(0, fs, k), f);
+
+start_freq = 6043612 +29.7e6 + 49.3e6;
+alpha = 100e3;
+
+gr = imagesc(linspace(start_freq, start_freq + alpha * ELAPSED_TIME, m) / 1e6,linspace(0, fs / (fs*100) * 3e8 / 1000, k), f);
 % gr = imagesc(linspace(0, ELAPSED_TIME, m),linspace(0, 50e6 / 4, k), f(1:round(length(f)/4),:));
 % gr = imagesc(linspace(0, ELAPSED_TIME, m),linspace(0, fs / 4, k), f(1:round(length(f)/4),round(m / 2) : round(m / 2 * 1.3)));
 
