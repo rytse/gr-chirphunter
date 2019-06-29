@@ -65,29 +65,29 @@ blocks:
   states:
     coordinate: [586, 13]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: fn
   id: variable
   parameters:
     comment: ''
     value: '''/media/rytse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will
-      not copy/IQREC-02-03-19-16h32m12s115.iq'''
+      not copy/IQREC-02-03-19-12h31m01s566.iq'''
   states:
     coordinate: [578, 60]
     rotation: 0
-    state: disabled
-- name: lpf_taps
+    state: enabled
+- name: lpf
   id: variable_low_pass_filter_taps
   parameters:
     beta: '6.76'
     comment: ''
-    cutoff_freq: samp_rate / decim / 2
+    cutoff_freq: 50e6 / 100
     gain: '1.0'
-    samp_rate: samp_rate / decim
-    width: 0.1e3
+    samp_rate: samp_rate
+    width: 50e3
     win: firdes.WIN_HAMMING
   states:
-    coordinate: [860, 14]
+    coordinate: [861, 12]
     rotation: 0
     state: true
 - name: samp_rate
@@ -99,43 +99,6 @@ blocks:
     coordinate: [184, 12.0]
     rotation: 0
     state: enabled
-- name: band_pass_filter_0
-  id: band_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    decim: '1'
-    gain: '1'
-    high_cutoff_freq: 7e6
-    interp: '1'
-    low_cutoff_freq: 6e6
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_ccf
-    width: 0.1e6
-    win: firdes.WIN_HAMMING
-  states:
-    coordinate: [648, 412]
-    rotation: 0
-    state: enabled
-- name: blocks_add_xx_0
-  id: blocks_add_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    coordinate: [296, 269]
-    rotation: 0
-    state: disabled
 - name: blocks_complex_to_real_0
   id: blocks_complex_to_real
   parameters:
@@ -146,7 +109,7 @@ blocks:
     minoutbuf: '0'
     vlen: '1'
   states:
-    coordinate: [1014, 274]
+    coordinate: [1095, 375]
     rotation: 0
     state: enabled
 - name: blocks_conjugate_cc_0
@@ -158,7 +121,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    coordinate: [286, 469]
+    coordinate: [292, 304]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_1
@@ -168,29 +131,14 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/rytse/Documents/cubesat/gr-chirphunter/data/out/sim_real_raw.out
+    file: /home/rytse/Documents/cubesat/gr-chirphunter/data/out/real_nofilt_nodecim_adj.out
     type: complex
     unbuffered: 'False'
     vlen: '1'
   states:
-    coordinate: [1210, 168]
+    coordinate: [1291, 269]
     rotation: 0
     state: enabled
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '100000000'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    coordinate: [292, 367]
-    rotation: 0
-    state: true
 - name: blocks_multiply_xx_1
   id: blocks_multiply_xx
   parameters:
@@ -203,22 +151,7 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [531, 171]
-    rotation: 0
-    state: enabled
-- name: chirphunter_chirpgen_0
-  id: chirphunter_chirpgen
-  parameters:
-    affinity: ''
-    alias: ''
-    chirp_rate: chirp_rate
-    comment: ''
-    f0: 'f0 '
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-  states:
-    coordinate: [18, 351]
+    coordinate: [577, 270]
     rotation: 0
     state: enabled
 - name: chirphunter_chirpgen_1
@@ -228,30 +161,28 @@ blocks:
     alias: ''
     chirp_rate: chirp_rate
     comment: ''
-    f0: f0  * 1.005 * 1.5 * 2
+    f0: f0 +29.7e6 + 49.3e6
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
   states:
-    coordinate: [34, 449]
+    coordinate: [40, 284]
     rotation: 0
     state: enabled
-- name: fir_filter_xxx_1
-  id: fir_filter_xxx
+- name: chirphunter_saw_0
+  id: chirphunter_saw
   parameters:
+    _buflen: '256'
+    _fftlen: '1048576'
     affinity: ''
     alias: ''
     comment: ''
-    decim: decim
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_delay: '0'
-    taps: lpf_taps
-    type: ccc
   states:
-    coordinate: [769, 175]
+    coordinate: [757, 502]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: import_1
   id: import
   parameters:
@@ -272,9 +203,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    coordinate: [30, 165]
+    coordinate: [22, 160]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -293,7 +224,101 @@ blocks:
     width: 0.1e6
     win: firdes.WIN_HAMMING
   states:
-    coordinate: [251, 10]
+    coordinate: [331, 111]
+    rotation: 0
+    state: bypassed
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: blue
+    color2: green
+    color3: black
+    color4: cyan
+    color5: magenta
+    color6: yellow
+    color7: dark red
+    color8: dark green
+    color9: Dark Blue
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '1'
+    marker10: '1'
+    marker2: '1'
+    marker3: '1'
+    marker4: '1'
+    marker5: '1'
+    marker6: '1'
+    marker7: '1'
+    marker8: '1'
+    marker9: '1'
+    name: '""'
+    nconnections: '1'
+    size: '256'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    coordinate: [1257, 494]
     rotation: 0
     state: disabled
 - name: qtgui_waterfall_sink_x_0
@@ -351,25 +376,38 @@ blocks:
     update_time: '0.10'
     wintype: firdes.WIN_BLACKMAN_hARRIS
   states:
-    coordinate: [1212, 254]
+    coordinate: [1293, 355]
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '100'
+    fbw: '0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: lpf
+    type: ccc
+  states:
+    coordinate: [780, 258]
     rotation: 0
     state: enabled
 
 connections:
-- [band_pass_filter_0, '0', blocks_complex_to_real_0, '0']
-- [band_pass_filter_0, '0', blocks_multiply_xx_1, '0']
-- [blocks_add_xx_0, '0', band_pass_filter_0, '0']
 - [blocks_complex_to_real_0, '0', qtgui_waterfall_sink_x_0, '0']
 - [blocks_conjugate_cc_0, '0', blocks_multiply_xx_1, '1']
-- [blocks_multiply_const_vxx_0, '0', band_pass_filter_0, '0']
-- [blocks_multiply_const_vxx_0, '0', blocks_add_xx_0, '1']
-- [blocks_multiply_xx_1, '0', fir_filter_xxx_1, '0']
-- [chirphunter_chirpgen_0, '0', blocks_multiply_const_vxx_0, '0']
+- [blocks_multiply_xx_1, '0', chirphunter_saw_0, '0']
+- [blocks_multiply_xx_1, '0', rational_resampler_xxx_0, '0']
 - [chirphunter_chirpgen_1, '0', blocks_conjugate_cc_0, '0']
-- [fir_filter_xxx_1, '0', blocks_file_sink_1, '0']
-- [iqsource_1, '0', blocks_add_xx_0, '0']
+- [chirphunter_saw_0, '0', qtgui_time_sink_x_0, '0']
 - [iqsource_1, '0', low_pass_filter_0, '0']
 - [low_pass_filter_0, '0', blocks_multiply_xx_1, '0']
+- [rational_resampler_xxx_0, '0', blocks_complex_to_real_0, '0']
+- [rational_resampler_xxx_0, '0', blocks_file_sink_1, '0']
 
 metadata:
   file_format: 1
