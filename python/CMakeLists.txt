@@ -32,7 +32,8 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    DESTINATION ${GR_PYTHON_DIR}/chirphunter
+    saw.py
+    hough.py DESTINATION ${GR_PYTHON_DIR}/chirphunter
 )
 
 ########################################################################
@@ -43,3 +44,5 @@ include(GrTest)
 set(GR_TEST_TARGET_DEPS gnuradio-chirphunter)
 set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
 GR_ADD_TEST(qa_chirpgen ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_chirpgen.py)
+GR_ADD_TEST(qa_saw ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_saw.py)
+GR_ADD_TEST(qa_hough ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_hough.py)

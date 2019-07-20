@@ -1,0 +1,26 @@
+id: chirphunter_saw
+label: saw
+category: '[chirphunter]'
+
+templates:
+  imports: import chirphunter
+  make: chirphunter.saw(${_buflen}, ${_fftlen})
+
+parameters:
+- id: _buflen
+  label: Buffer Length (number of columns to sum across)
+  dtype: int
+- id: _fftlen
+  label: FFT Length
+  dtype: int
+
+inputs:
+- label: mixed
+  dtype: complex
+  vlen: 1
+
+outputs:
+- label: sawed
+  dtype: float 
+
+file_format: 1

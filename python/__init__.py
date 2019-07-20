@@ -32,4 +32,6 @@ except ImportError:
     pass
 
 # import any pure python here
+from .saw import saw
+from .hough import hough
 #

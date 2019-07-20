@@ -19,5 +19,7 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    chirphunter_chirpgen.block.yml DESTINATION share/gnuradio/grc/blocks
+    chirphunter_chirpgen.block.yml
+    chirphunter_saw.block.yml
+    chirphunter_hough.block.yml DESTINATION share/gnuradio/grc/blocks
 )
