@@ -676,52 +676,96 @@
 # <https://www.gnu.org/licenses/why-not-lgpl.html>.
 #
 
-
 import numpy as np
 import numpy.fft
+import matplotlib.pyplot as plt
 from gnuradio import gr
+from multiprocessing import Process
+
+def hough_transform(img, NTHETA, NB, tmin, tmax, SIGMA):
+    print('Starting hough transform')
+    houghm = np.zeros((NTHETA, NB))
+    M, N = img.shape
+    X, Y = np.ix_(np.arange(M), np.arange(N))
+
+    tidx = 0
+    for theta in np.linspace(0, np.pi / 2, NTHETA):
+        print(f'Theta: {theta}')
+        ridx = 0
+        for b in np.linspace(-img.shape[0], img.shape[0], NB):
+            dists = np.exp(-np.square(X * np.sin(np.pi / 2 - theta) - (Y - b) * np.cos(np.pi / 2 - theta)) / 2 / np.square(SIGMA))
+            houghm[tidx, ridx] = np.sum(img * dists)
+
+            ridx += 1
+        tidx += 1
+
+        prep = int(tidx / NTHETA * 100)
+        if prep % 5 == 0:
+            print(f'{prep}% - ', end='')
+
+    plt.imshow(houghm)
+    plt.savefig('hough.png')
+
 
 class hough(gr.sync_block):
     """
     docstring for block hough
     """
-    def __init__(self, houghlen, fftlen, tmin, tmax, dtheta, db):
+    def __init__(self, houghlen, fftlen, tmin, tmax, ntheta, nb, sigma):
         gr.sync_block.__init__(self,
-            name="hough",
-            in_sig=[np.complex64],
-            out_sig=None)
+                name="hough",
+                in_sig=[np.complex64],
+                out_sig=None)
 
         self.houghlen = houghlen
+        self.fftlen = fftlen
+        self.tmin = tmin
+        self.tmax = tmax
+        self.ntheta = ntheta
+        self.nb = nb
+        self.sigma = sigma
 
-        self.fftbuf = np.zeros(fftlen)
+        self.fftbuf = np.zeros(fftlen, dtype=np.complex64)
         self.fftbuf_ptr = 0
 
         self.img = np.zeros([fftlen, houghlen])
         self.img_ptr = 0
 
-        self.hspace = np.zeros([(tmin - tmax) / dtheta, fftlen / db])
+        self.hspace = np.zeros([ntheta, nb])
+
+        print('Finished constructing hough block')
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
 
         inptr = 0
 
+        print('Started work cycle')
+
         while inptr < len(in0):
             if self.img_ptr == self.houghlen:
-                # TODO spawn process that performs the weighted trimmed hough transform at its
-                # own time and plots and sends a message when it finishes
-                pass
+                print('About to spawn process')
+                p = Process(target=hough_transform, args=(self.img, self.ntheta, self.nb, self.tmin, self.tmax, self.sigma,))
+                p.start()
+                #p.join()
+                print('Spawned process')
+                self.img_ptr = 0
+
             if self.fftbuf_ptr < len(self.fftbuf):
                 if len(in0) - inptr < len(self.fftbuf) - self.fftbuf_ptr:
                     self.fftbuf[self.fftbuf_ptr : self.fftbuf_ptr + len(in0) - inptr] = in0[inptr:]
                     self.fftbuf_ptr += len(in0) - inptr
                     inptr = len(in0)
+                    print('Next col')
+
                 else:
                     self.fftbuf[self.fftbuf_ptr:] = in0[inptr : inptr + len(self.fftbuf) - self.fftbuf_ptr]
                     inptr += len(self.fftbuf) - self.fftbuf_ptr
                     self.fftbuf_ptr = len(self.fftbuf)
+                    print('Next col')
+
             elif self.fftbuf_ptr == len(self.fftbuf):
-                self.img[self.img_ptr:] = np.fft.fft(self.fftbuf)
+                self.img[self.img_ptr:] = np.fft.fft(self.fftbuf).real
                 self.img_ptr += 1
             else:
                 print('You done goofed, fftbuf too full')

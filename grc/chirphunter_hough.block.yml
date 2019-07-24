@@ -4,40 +4,40 @@ category: '[chirphunter]'
 
 templates:
   imports: import chirphunter
-  make: chirphunter.hough(${houghlen}, ${fftlen}, ${tmin}, ${tmax})
+  make: chirphunter.hough(${houghlen}, ${fftlen}, ${tmin}, ${tmax}, ${ntheta}, ${nb}, ${sigma})
 
-<!-- Make one 'parameters' list entry for every Parameter you want settable from the GUI.
-     Sub-entries of dictionary:
-     * id (makes the value accessible as \$keyname, e.g. in the make entry)
-     * label
-     * dtype -->
 parameters:
-- id: ...
-  label: ...
-  dtype: ...
-- id: ...
-  label: ...
-  dtype: ...
+- id: houghlen
+  label: Num Columns
+  dtype: int
+- id: fftlen
+  label: Num Rows
+  dtype: int
+- id: tmin
+  label: Theta Min
+  dtype: float
+- id: tmax
+  label: Theta Max
+  dtype: float
+- id: ntheta
+  label: Theta Gridsize
+  dtype: int
+- id: nb
+  label: Y-Intercept Gridsize
+  dtype: int
+- id: sigma
+  label: RBF Sigma
+  dtype: int
 
-<!-- Make one 'inputs' list entry per input. Sub-entries of dictionary:
-     * label (an identifier for the GUI)
-     * domain
-     * dtype
-     * vlen
-     * optional (set to 1 for optional inputs) -->
 inputs:
-- label: ...
-  domain: ...
-  dtype: ...
-  vlen: ...
+- label: Mixed Decimated Chirp
+  domain: stream
+  dtype: complex
+  vlen: 1
 
-<!-- Make one 'outputs' list entry per output. Sub-entries of dictionary:
-     * label (an identifier for the GUI)
-     * dtype
-     * vlen
-     * optional (set to 1 for optional inputs) -->
-- label: ...
-  domain: ...
-  dtype: !-- e.g. int, float, complex, byte, short, xxx_vector, ...--
+  #outputs:
+  #- label: Message Out
+  #domain: message
+  #dtype: byte 
 
 file_format: 1

@@ -24,6 +24,9 @@ options:
     title: top_block
     window_size: ''
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [8, 8]
     rotation: 0
     state: enabled
@@ -35,6 +38,9 @@ blocks:
     comment: ''
     value: 9.9951e4
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [474, 13]
     rotation: 0
     state: enabled
@@ -44,6 +50,9 @@ blocks:
     comment: ''
     value: '500'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [273, 12]
     rotation: 0
     state: enabled
@@ -53,6 +62,9 @@ blocks:
     comment: ''
     value: '6043612'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [356, 13]
     rotation: 0
     state: enabled
@@ -63,6 +75,9 @@ blocks:
     value: '''/media/rytse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will
       not copy/IQREC-02-03-19-14h02m40s879.iq'''
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [586, 13]
     rotation: 0
     state: disabled
@@ -73,9 +88,12 @@ blocks:
     value: '''/media/rytse/Seagate Backup Plus Drive/Flash Drive/cubesat/new sh recordings/will
       not copy/IQREC-02-03-19-12h31m01s566.iq'''
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [578, 60]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: lpf
   id: variable_low_pass_filter_taps
   parameters:
@@ -87,6 +105,9 @@ blocks:
     width: 50e3
     win: firdes.WIN_HAMMING
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [861, 12]
     rotation: 0
     state: true
@@ -96,6 +117,9 @@ blocks:
     comment: ''
     value: 50e6
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [184, 12.0]
     rotation: 0
     state: enabled
@@ -109,9 +133,12 @@ blocks:
     minoutbuf: '0'
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1095, 375]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_conjugate_cc_0
   id: blocks_conjugate_cc
   parameters:
@@ -121,9 +148,31 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [292, 304]
     rotation: 0
     state: enabled
+- name: blocks_delay_0
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '5000000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [254, 240]
+    rotation: 0
+    state: true
 - name: blocks_file_sink_1
   id: blocks_file_sink
   parameters:
@@ -131,14 +180,30 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/rytse/Documents/cubesat/gr-chirphunter/data/out/real_nofilt_nodecim_adj.out
+    file: /home/vagrant/gr-chirphunter/data/out/real_nofilt_nodecim_adj.out
     type: complex
     unbuffered: 'False'
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1291, 269]
     rotation: 0
-    state: enabled
+    state: disabled
+- name: blocks_message_debug_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1364, 56]
+    rotation: 0
+    state: disabled
 - name: blocks_multiply_xx_1
   id: blocks_multiply_xx
   parameters:
@@ -151,6 +216,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [577, 270]
     rotation: 0
     state: enabled
@@ -166,9 +234,32 @@ blocks:
     minoutbuf: '0'
     samp_rate: samp_rate
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [40, 284]
     rotation: 0
     state: enabled
+- name: chirphunter_hough_0
+  id: chirphunter_hough
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fftlen: '4096'
+    houghlen: '4096'
+    nb: '10'
+    ntheta: '10'
+    sigma: '5'
+    tmax: np.pi / 2
+    tmin: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1073, 147]
+    rotation: 0
+    state: true
 - name: chirphunter_saw_0
   id: chirphunter_saw
   parameters:
@@ -180,6 +271,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [757, 502]
     rotation: 0
     state: disabled
@@ -190,6 +284,9 @@ blocks:
     comment: ''
     imports: import numpy as np
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [771, 14]
     rotation: 0
     state: true
@@ -203,9 +300,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [22, 160]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -224,9 +324,12 @@ blocks:
     width: 0.1e6
     win: firdes.WIN_HAMMING
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [331, 111]
     rotation: 0
-    state: bypassed
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -318,6 +421,9 @@ blocks:
     ymin: '-1'
     yunit: '""'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1257, 494]
     rotation: 0
     state: disabled
@@ -376,9 +482,12 @@ blocks:
     update_time: '0.10'
     wintype: firdes.WIN_BLACKMAN_hARRIS
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1293, 355]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -393,6 +502,9 @@ blocks:
     taps: lpf
     type: ccc
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [780, 258]
     rotation: 0
     state: enabled
@@ -400,14 +512,14 @@ blocks:
 connections:
 - [blocks_complex_to_real_0, '0', qtgui_waterfall_sink_x_0, '0']
 - [blocks_conjugate_cc_0, '0', blocks_multiply_xx_1, '1']
+- [blocks_delay_0, '0', blocks_multiply_xx_1, '0']
 - [blocks_multiply_xx_1, '0', chirphunter_saw_0, '0']
 - [blocks_multiply_xx_1, '0', rational_resampler_xxx_0, '0']
 - [chirphunter_chirpgen_1, '0', blocks_conjugate_cc_0, '0']
-- [chirphunter_saw_0, '0', qtgui_time_sink_x_0, '0']
-- [iqsource_1, '0', low_pass_filter_0, '0']
-- [low_pass_filter_0, '0', blocks_multiply_xx_1, '0']
+- [chirphunter_chirpgen_1, '0', blocks_delay_0, '0']
 - [rational_resampler_xxx_0, '0', blocks_complex_to_real_0, '0']
 - [rational_resampler_xxx_0, '0', blocks_file_sink_1, '0']
+- [rational_resampler_xxx_0, '0', chirphunter_hough_0, '0']
 
 metadata:
   file_format: 1
