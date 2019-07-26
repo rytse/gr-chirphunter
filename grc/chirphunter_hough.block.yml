@@ -31,7 +31,6 @@ parameters:
 
 inputs:
 - label: Mixed Decimated Chirp
-  domain: stream
   dtype: complex
   vlen: 1
 

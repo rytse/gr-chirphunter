@@ -138,7 +138,7 @@ blocks:
     bus_structure: null
     coordinate: [1095, 375]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_conjugate_cc_0
   id: blocks_conjugate_cc
   parameters:
@@ -154,25 +154,6 @@ blocks:
     coordinate: [292, 304]
     rotation: 0
     state: enabled
-- name: blocks_delay_0
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: '5000000'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [254, 240]
-    rotation: 0
-    state: true
 - name: blocks_file_sink_1
   id: blocks_file_sink
   parameters:
@@ -180,7 +161,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/vagrant/gr-chirphunter/data/out/real_nofilt_nodecim_adj.out
+    file: /home/rtse/Documents/cubesat/gr-chirphunter/data/out/real_nofilt_nodecim_adj.out
     type: complex
     unbuffered: 'False'
     vlen: '1'
@@ -190,7 +171,7 @@ blocks:
     bus_structure: null
     coordinate: [1291, 269]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_message_debug_0
   id: blocks_message_debug
   parameters:
@@ -222,12 +203,30 @@ blocks:
     coordinate: [577, 270]
     rotation: 0
     state: enabled
-- name: chirphunter_chirpgen_1
+- name: chirphunter_chirpgen_0
   id: chirphunter_chirpgen
   parameters:
     affinity: ''
     alias: ''
     chirp_rate: chirp_rate
+    comment: ''
+    f0: f0
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 156.0]
+    rotation: 0
+    state: enabled
+- name: chirphunter_chirpgen_1
+  id: chirphunter_chirpgen
+  parameters:
+    affinity: ''
+    alias: ''
+    chirp_rate: chirp_rate * 0.9
     comment: ''
     f0: f0 +29.7e6 + 49.3e6
     maxoutbuf: '0'
@@ -248,8 +247,8 @@ blocks:
     comment: ''
     fftlen: '4096'
     houghlen: '4096'
-    nb: '10'
-    ntheta: '10'
+    nb: '20'
+    ntheta: '50'
     sigma: '5'
     tmax: np.pi / 2
     tmin: '0'
@@ -259,7 +258,7 @@ blocks:
     bus_structure: null
     coordinate: [1073, 147]
     rotation: 0
-    state: true
+    state: enabled
 - name: chirphunter_saw_0
   id: chirphunter_saw
   parameters:
@@ -327,7 +326,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [331, 111]
+    coordinate: [160, 92.0]
     rotation: 0
     state: disabled
 - name: qtgui_time_sink_x_0
@@ -487,7 +486,7 @@ blocks:
     bus_structure: null
     coordinate: [1293, 355]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -512,11 +511,10 @@ blocks:
 connections:
 - [blocks_complex_to_real_0, '0', qtgui_waterfall_sink_x_0, '0']
 - [blocks_conjugate_cc_0, '0', blocks_multiply_xx_1, '1']
-- [blocks_delay_0, '0', blocks_multiply_xx_1, '0']
 - [blocks_multiply_xx_1, '0', chirphunter_saw_0, '0']
 - [blocks_multiply_xx_1, '0', rational_resampler_xxx_0, '0']
+- [chirphunter_chirpgen_0, '0', blocks_multiply_xx_1, '0']
 - [chirphunter_chirpgen_1, '0', blocks_conjugate_cc_0, '0']
-- [chirphunter_chirpgen_1, '0', blocks_delay_0, '0']
 - [rational_resampler_xxx_0, '0', blocks_complex_to_real_0, '0']
 - [rational_resampler_xxx_0, '0', blocks_file_sink_1, '0']
 - [rational_resampler_xxx_0, '0', chirphunter_hough_0, '0']
