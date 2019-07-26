@@ -16,6 +16,11 @@ import pickle
 import scipy.constants
 import scipy.optimize
 
+def medianEqualize(S):
+    for i in numpy.arange(S.shape[0]):
+        S[i, :] = S[i, :] / numpy.median(S[i, :])
+    return (S)
+
 # seed is a way of reproducing the random code without
 # having to store all actual codes. the seed can then
 # act as a sort of station_id.
