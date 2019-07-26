@@ -1,0 +1,41 @@
+id: chirphunter_fhough
+label: fhough
+category: '[chirphunter]'
+
+templates:
+  imports: import chirphunter
+  make: chirphunter.fhough(${fftlen}, ${hwinlen}, ${tmin}, ${tmax}, ${ntheta}, ${nb}, ${sigma})
+
+parameters:
+- id: fftlen
+  label: Num Rows
+  dtype: int
+- id: hwinlen
+  label: Num Columns
+- id: tmin
+  label: Theta Min
+  dtype: float
+- id: tmax
+  label: Theta Max
+  dtype: float
+- id: ntheta
+  label: Theta Gridsize
+  dtype: int
+- id: nb
+  label: Y-Intercept Gridsize
+  dtype: int
+- id: sigma
+  label: RBF Sigma
+  dtype: int
+
+inputs:
+- label: Mixed Decimated Chirp
+  dtype: complex
+  vlen: 1
+
+  #outputs:
+  #- label: Message Out
+  #domain: message
+  #dtype: byte 
+
+file_format: 1
