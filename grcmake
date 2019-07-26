@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-INSTALL_DIR=~/miniconda3/envs/dsp
+
+TPATH="$(which python)"
+INSTALL_DIR=${TPATH%/bin/python}
+
 cmake -DPYTHON_EXECUTABLE=$INSTALL_DIR/bin/python3.7 -DPYTHON_INCLUDE_DIR=$INSTALL_DIR/include/python3.7m -DPYTHON_LIBRARY=$INSTALL_DIR/lib/libpython3.7m.so -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ../
