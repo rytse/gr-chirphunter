@@ -21,6 +21,5 @@
 install(FILES
     chirphunter_chirpgen.block.yml
     chirphunter_saw.block.yml
-    chirphunter_hough.block.yml
-    chirphunter_fhough.block.yml DESTINATION share/gnuradio/grc/blocks
+    chirphunter_hough.block.yml DESTINATION share/gnuradio/grc/blocks
 )

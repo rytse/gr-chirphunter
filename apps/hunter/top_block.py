@@ -119,6 +119,7 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_grid_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
+        self.chirphunter_hough_0 = chirphunter.hough(4096, 4096, 0, np.pi / 2, 50, 20, 5)
         self.chirphunter_chirpgen_1 = chirphunter.chirpgen(f0 +29.7e6 + 49.3e6, chirp_rate * 0.9, samp_rate)
         self.chirphunter_chirpgen_0 = chirphunter.chirpgen(f0, chirp_rate, samp_rate)
         self.blocks_multiply_xx_1 = blocks.multiply_vcc(1)
@@ -139,6 +140,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.connect((self.chirphunter_chirpgen_1, 0), (self.blocks_conjugate_cc_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_complex_to_real_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_file_sink_1, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.chirphunter_hough_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
