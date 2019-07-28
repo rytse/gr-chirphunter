@@ -25,6 +25,7 @@ include(GrPlatform) #define LIB_SUFFIX
 
 list(APPEND chirphunter_sources
     chirpgen_impl.cc
+    fhough_impl.cc
 )
 
 set(chirphunter_sources "${chirphunter_sources}" PARENT_SCOPE)

@@ -23,5 +23,6 @@
 ########################################################################
 install(FILES
     api.h
-    chirpgen.h DESTINATION include/chirphunter
+    chirpgen.h
+    fhough.h DESTINATION include/chirphunter
 )
